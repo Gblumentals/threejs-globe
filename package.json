@@ -13,5 +13,13 @@
   },
   "dependencies": {
     "three": "^0.156.1"
-  }
+  },
+  "keywords": [
+    "vite",
+    "vanilla",
+    "vanillajs",
+    "threejs",
+    "threejs-globe",
+    "cartesian"
+  ]
 }

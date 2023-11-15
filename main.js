@@ -15,13 +15,10 @@ camera.position.setZ(2)
 
 renderer.render(scene, camera)
 
+const pointLight = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1)
+pointLight.position.set(0.25,1,0.25)
 
-const pointLight = new THREE.PointLight(0xffffff)
-pointLight.position.set(5,5,5)
-
-const ambientLight = new THREE.AmbientLight(0xffffff)
-
-scene.add(pointLight, ambientLight)
+scene.add(pointLight)
 
 //Helpers
 // const lightHelper = new THREE.PointLightHelper(pointLight)
@@ -44,15 +41,12 @@ const earthTexture = new THREE.TextureLoader().load('earthmap1k.jpg')
 
 const earth = new THREE.Mesh(
   new THREE.SphereGeometry(1, 32, 32),
-  new THREE.MeshStandardMaterial({ 
-    map: earthTexture,
-    transparent: true,
-    opacity: 1
+  new THREE.MeshPhongMaterial({ 
+    map: earthTexture
   })
 )
 
-// scene.add(earth)
-globeGroup.add(earth)
+globeGroup.add(earth) //add earth to the scene
 
 const cloudTexture = new THREE.TextureLoader().load('clouds.jpg')
 
@@ -67,7 +61,7 @@ const climate = new THREE.Mesh(
   })
 )
 
-scene.add(climate)
+globeGroup.add(climate)   
 
 let locations = [
   {
@@ -151,7 +145,7 @@ function getCurve(loc1, loc2) {
   const geometry = new THREE.TubeGeometry(path, 10, 0.001, 8, false)
   const material = new THREE.MeshBasicMaterial({ color: 0x00ffa7 })
   const mesh = new THREE.Mesh(geometry, material)
-  // scene.add(mesh)
+
   globeGroup.add(mesh)
 }
 
@@ -167,8 +161,6 @@ for (let i = 0; i < locations.length; i++) {
   )
 
   mesh.position.set(pos1.x, pos1.y, pos1.z)
-  // scene.add(mesh)
-
   globeGroup.add(mesh)
 
   if (i < locations.length-1) {
@@ -189,8 +181,6 @@ function onWindowResize(){
 }
 
 function animate() {
-  requestAnimationFrame(animate)
-
   climate.rotation.x += -0.005
   climate.rotation.y += -0.005
   climate.rotation.z += -0.005
@@ -199,11 +189,10 @@ function animate() {
   globeGroup.rotation.y += 0.002
   globeGroup.rotation.z += 0.002
 
- 
-
   controls.update()
 
   renderer.render(scene, camera)
+  requestAnimationFrame(animate)
 }
 
 animate()
